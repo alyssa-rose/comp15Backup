@@ -16,13 +16,11 @@ using namespace std;
 void read_stat_unit_test();
 void print_train_unit_test();
 void command_unit_test();
-void commFile_unit_test();
 
 int main(){
 	read_stat_unit_test();
 	print_train_unit_test();
 	command_unit_test();
-	commFile_unit_test();
 }
 
 // checks if stations are read in correctly
@@ -65,5 +63,14 @@ void print_train_unit_test(){
 }
 
 void command_unit_test(){
-	
+
+	//temporarily changed command file to output the
+	// file name each time it changes and see if it
+	// matched the expected file name at that particular time
+	commandFile("pass.txt", "command_testing.txt");
+
+	if ((stat[0].pass).size != 1)
+		cerr << "p 1 4 not executed properly" << endl;
+	if ((stat[1].pass).size != 2)
+		cerr << "p 2 3 and p 2 8 not executed properly" << endl;
 }
