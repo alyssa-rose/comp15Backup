@@ -13,7 +13,6 @@
 MetroSim::MetroSim(){
 	numPass = 1;
 	currStat = 0;
-	maxStat = 0;
 	dir = 1;
 }
 
@@ -29,13 +28,12 @@ void MetroSim::read_stat(ifstream& infile){
 	int count = 1;
     while (getline(infile, statName)) {
         Station s;
-        s.name = statName
+        s.name = statName;
         s.id = count;
         stat.push_back(s);
         count++;
     }
     currStat = 1;
-    maxStat = count;
     infile.close();
 }
 
@@ -60,8 +58,8 @@ void MetroSim::print_map(){
 			for (int j = 0; j < ((stat[i]).pass).size(); j++){
 				if (i == 0)
 					cout << "{";
-				cout << "[" << ((stat[i]).pass).id << ", " << ((stat[i]).pass).arrive <<
-				"->" << ((stat[i]).pass).depart << "]";
+				cout << "[" << ((stat[i]).pass[j]).id << ", " << ((stat[i]).pass[j]).arrive <<
+				"->" << ((stat[i]).pass[j]).depart << "]";
 				if (i == ((stat[i]).pass).size() - 1)
 					cout << "}" << endl;
 			}
@@ -96,10 +94,13 @@ void MetroSim::command(string comm){
 	}
 
 	if (comm[0] == 'f'){
+		ostream outfile;
 		passFile = comm.substr(2, comm.length());
-		if (!passFile.is_open()){
+		passFile = passFile + ".txt";
+		outfile.open(passFile.c_str());
+		if (!outfile.is_open()){
 			cerr << "Could not open file " << passFile << endl;
-			return FAIL;
+			return;
 		}
 	}
 	print_map();
@@ -115,7 +116,7 @@ void MetroSim::move_train(){
 	int k = (stat[currStat - 1].pass).size();
 	if (k != 0) {
 		for (int i = 0; i < k; i++){
-			train.push_back((stat[currStat - 1].pass).pop_back());
+			train.push_back(((stat[currStat - 1]).pass).pop_back());
 		}
 	}
 	if ((currStat == 0) or (currStat == stat.size()))
@@ -128,10 +129,9 @@ void MetroSim::move_train(){
 		for (int i = 0; i < train.size(); i++){ 
 			Passenger p = train[i];
 			if (p.depart == currStat){
-				outfile(passFile, p);
+				out_file(passFile, p);
 				train.erase(i);
 				train.shrink_to_fit();
-
 			}
 		}
 	}
