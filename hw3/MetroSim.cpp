@@ -20,10 +20,10 @@ MetroSim::MetroSim(){
 MetroSim::~MetroSim(){
 
 }
-// Function: 
-// Input:
-// Return:
-// Does: 
+// Function: read_stat(ifstream& infile)
+// Input: text file
+// Return: nothing
+// Does: reads stat file into structs
 void MetroSim::read_stat(ifstream& infile){
 	string statName = "";
 	int count = 1;
@@ -39,10 +39,11 @@ void MetroSim::read_stat(ifstream& infile){
     infile.close();
 }
 
-// Function: 
-// Input:
-// Return:
-// Does: 
+// Function: print_map()
+// Input: nothing
+// Return: nothing
+// Does: prints the structs of the stations
+// and the passengers
 void MetroSim::print_map(){
 	print_train();
 	for (int i = 0; i < stat.size(); i++){
@@ -68,18 +69,18 @@ void MetroSim::print_map(){
 	}
 }
 
-// Function: 
-// Input:
-// Return:
-// Does: 
+// Function: out_file(ostream& out, Passenger p)
+// Input: file to write the passenger info to and a passenger struct
+// Return: nothing
+// Does: prints passenger info to an outfile
 void MetroSim::out_file(ostream& out, Passenger p){
     out << "Passenger " << p.id << "left train at station " << p.depart << '\n';
 }
 
-// Function: 
-// Input:
-// Return:
-// Does: 
+// Function: command(string comm)
+// Input: string containing the command
+// Return: nothing
+// Does: calls helper functions for all the possible commands
 void MetroSim::command(string comm){
 	if (comm == "m m") {
 		move_train();
@@ -104,10 +105,10 @@ void MetroSim::command(string comm){
 	print_map();
 }
 
-// Function: 
-// Input:
-// Return:
-// Does: 
+// Function: move_train()
+// Input: none
+// Return: nothing
+// Does: function to handle passenger info if the train moves
 void MetroSim::move_train(){
 	// checking if passengers need to be put into
 	// the train vector
