@@ -60,11 +60,11 @@ void MetroSim::print_map(){
 			cout << "{}" << endl;
 		else {
 			for (int j = 0; j < ((int)((stat[i]).pass).size()); j++){
-				if (i == 0)
+				if (j == 0)
 					cout << "{";
 				cout << "[" << ((stat[i]).pass[j]).id << ", " << ((stat[i]).pass[j]).arrive <<
 				"->" << ((stat[i]).pass[j]).depart << "]";
-				if (i == ((int)((stat[i]).pass).size()) - 1)
+				if (j == ((int)((stat[i]).pass).size()) - 1)
 					cout << "}" << endl;
 			}
 		}
@@ -159,12 +159,13 @@ void MetroSim::commandFile(char* two, char* three){
 void MetroSim::move_train(ofstream& out){
 	// checking if passengers need to be put into
 	// the train vector
-	int k = (int)(stat[currStat - 1].pass).size();
+	int k = (int)((stat[currStat - 1].pass).size());
 	if (k != 0) {
-		for (int i = k; i > 0; i--){
+		cerr << k << endl;
+		for (int i = k - 1; i >= 0; i--){
 			Passenger m = stat[currStat - 1].pass[i];
-			(stat[currStat - 1].pass).pop_back();
 			train.push_back(m);
+			(stat[currStat - 1].pass).pop_back();
 		}
 	}
 	if ((currStat == 0) or (currStat == (int)stat.size()))
