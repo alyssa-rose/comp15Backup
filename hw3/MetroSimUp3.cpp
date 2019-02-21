@@ -199,7 +199,7 @@ void MetroSim::move_train(ofstream& out){
 	if (dir == -1)
 		currStat--;
 	if ((int)train.size() != 0){
-		for (int i = (int)train.size() - 1; i >= 0 ; i--){ 
+		for (int i = 0; i <(int)train.size() ; i++){ 
 			Passenger p = train[i];
 			if (p.depart == currStat){
 				out << "Passenger " << p.id << " left train at station " << p.depart << '\n';
