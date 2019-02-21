@@ -79,7 +79,8 @@ Testing:
 	-read_stat(ostream& out): checked by seeing if stations at particular indices of the "stat" vector matched expectation through
 	checking station name and checking the id number of the station
 
-	-command(char* two)/commandFile(char* two, char* three): 
+	-commandFile(char* two, char* three): checks if passengers were properly added to their arrival stations after use of 'p' command. Also checks if the passFile changed correctly after each switch by seeing if it matched the expected outcome after a particular line of
+	command_testing.txt was read
 
 
 Note: This homework comes partially implemented, but student must
