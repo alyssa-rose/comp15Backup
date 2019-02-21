@@ -79,34 +79,45 @@ void MetroSim::print_map(){
 void MetroSim::command(char* two){
 	ofstream outfile;
 	outfile.open(two);
-	string comm = "comm";
+	string pass;
+	int k = 0;
+	char c1 = 'c';
 	print_map();
 
-	while (comm != "m f"){
+	while (k == 0){
 		cout << "Command : ";
-		getline(cin, comm);
-		cout << comm << endl;
-		if (comm == "m m")
-			move_train(outfile);
-
-		if (comm[0] == 'p'){
-			Passenger p;
-			p.id = numPass;
-			p.arrive = comm[2] - '0';
-			p.depart = comm[4] - '0';
-			((stat[(p.arrive) - 1]).pass).push_back(p);
-			numPass++;
-		}
-
-		if (comm[0] == 'f'){
+		cin >> c1;
+		if (c1 == 'f'){
+			getline(cin, pass);
 			outfile.close();
 			ofstream outfile;
 			string passFile;
-			passFile = comm.substr(2, comm.length());
+			passFile = pass.substr(2, pass.length());
 			outfile.open(passFile.c_str());
 			if (!outfile.is_open()){
 				cerr << "Error: could not open file " << passFile << endl;
 				return;
+			}
+		}
+		else{
+			if (c1 == 'p'){
+				int c2, c3;
+				cin >> c2;
+				cin >> c3;
+				Passenger p;
+				p.id = numPass;
+				p.arrive = c2;
+				p.depart = c3;
+				((stat[(p.arrive) - 1]).pass).push_back(p);
+				numPass++;
+			}
+			if (c1 == 'm'){
+				char c2;
+				cin >> c2;
+				if (c2 == 'm')
+					move_train(outfile);
+				if (c2 == 'f')
+					k = 1;
 			}
 		}
 		print_map();
@@ -162,23 +173,24 @@ void MetroSim::move_train(ofstream& out){
 	int k = (int)((stat[currStat - 1].pass).size());
 	if (k != 0) {
 		cerr << k << endl;
-		for (int i = k - 1; i >= 0; i--){
+		for (int i = 0; i < k; i++){
 			Passenger m = stat[currStat - 1].pass[i];
 			train.push_back(m);
-			(stat[currStat - 1].pass).pop_back();
 		}
+		for (int i = 0; i < k; i++)
+			(stat[currStat - 1].pass).pop_back();
 	}
-	if ((currStat == 0) or (currStat == (int)stat.size()))
+	if (((currStat == 1) and dir == -1) or (currStat%(int)stat.size()) == 0)
 		dir *= -1;
 	if (dir == 1)
 		currStat++;
 	if (dir == -1)
 		currStat--;
 	if ((int)train.size() != 0){
-		for (int i = 0; i < (int)train.size(); i++){ 
+		for (int i = (int)train.size() - 1; i >= 0 ; i--){ 
 			Passenger p = train[i];
 			if (p.depart == currStat){
-				out << "Passenger " << p.id << "left train at station " << p.depart << '\n';
+				out << "Passenger " << p.id << " left train at station " << p.depart << '\n';
 				train.erase(train.begin() + i);
 			}
 		}
