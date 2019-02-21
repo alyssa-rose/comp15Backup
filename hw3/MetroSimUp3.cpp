@@ -126,34 +126,46 @@ void MetroSim::command(char* two){
 void MetroSim::commandFile(char* two, char* three){
 	ofstream outfile;
 	outfile.open(two);
-
+	int k = 0;
+	char c1 = 'c';
+	string pass;
 	ifstream commFile;
 	commFile.open(three);
 	string comm;
 	print_map();
-	while ((getline(commFile, comm)) and (comm != "m f")){
-
-		if (comm == "m m") 
-			move_train(outfile);
-
-		if (comm[0] == 'p'){
-			Passenger p;
-			p.id = numPass;
-			p.arrive = comm[2] - '0';
-			p.depart = comm[4] - '0';
-			(stat[(p.arrive) - 1].pass).push_back(p);
-			numPass++;
-		}
-
-		if (comm[0] == 'f'){
+	while (k == 0){
+		commFile >> c1;
+		if (c1 == 'f'){
+			getline(cin, pass);
 			outfile.close();
 			ofstream outfile;
 			string passFile;
-			passFile = comm.substr(2, comm.length());
-			outfile.open(passFile);
+			passFile = pass.substr(2, pass.length());
+			outfile.open(passFile.c_str());
 			if (!outfile.is_open()){
 				cerr << "Error: could not open file " << passFile << endl;
 				return;
+			}
+		}
+		else {
+			if (c1 == 'p'){
+				int c2, c3;
+				commFile >> c2;
+				commFile >> c3;
+				Passenger p;
+				p.id = numPass;
+				p.arrive = c2;
+				p.depart = c3;
+				((stat[(p.arrive) - 1]).pass).push_back(p);
+				numPass++;
+			}
+			if (c1 == 'm'){
+				char c2;
+				commFile >> c2;
+				if (c2 == 'm')
+					move_train(outfile);
+				if (c2 == 'f')
+					k = 1;
 			}
 		}
 		print_map();
