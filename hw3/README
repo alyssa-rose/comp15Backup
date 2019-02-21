@@ -37,15 +37,50 @@ stations.txt: an example file containing a list of stations.
 test_commands.txt: sample list of commands that you could give to
 the simulator
 
+test.cpp: a unit testing file that contains:
+	void read_stat_unit_test();
+	void print_train_unit_test();
+	void command_unit_test();
+	void commFile_unit_test();
+
+	which test their respective function
+
+
 Data Structures:
 
-Testing: Here describe the following: process of testing 
-(unit tests), mention of bugs you encountered while testing,
-mention of testing on inputs of different sizes and edge
-cases, good description of base cases you considered while
-testing. Demonstrate a methodical approach to testing. This 
-section of your REAMDE should be very thorough for homework
-assignments. 
+Testing: 
+
+	Bugs: 
+
+	-files wouldn't update on par with the Halligan 
+	servers, so errors already fixed would continue to appear
+
+	-issues in opening and closing the passFile, specifically
+	in placing where the opening/closing should occur (i.e. in
+	main or MetroSim, inside or outside of loops)
+
+	-issues with vector related functions like pop_back, 
+	push_back and erase. Specifically erase required the extra 
+	line of vector.erase(vector.begin() + indx) instead of 
+	vector.erase(indx)
+
+	-issues in passing files; specifically on how to properly use
+	char* and getting from argv[] and scope issues (i.e. move_train
+	needed the passFile and original design didn't consider the
+	scope issues).
+
+	Unit Testing:
+
+	-print_train()/print_map(): test.cpp checks for proper printing
+	on print_train as it requires less extra writing for testing purposes; print_train was checked by seeing if it matched the 
+	expected line for the passengers put onto the train with string
+	literal comparisons
+
+	-read_stat(ostream& out): checked by seeing if stations at particular indices of the "stat" vector matched expectation through
+	checking station name and checking the id number of the station
+
+	-command(char* two)/commandFile(char* two, char* three): 
+
 
 Note: This homework comes partially implemented, but student must
 also create the driver and add class functionality.
